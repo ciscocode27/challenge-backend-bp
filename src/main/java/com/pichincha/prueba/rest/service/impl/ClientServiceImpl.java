@@ -27,14 +27,14 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client save(Client client) throws Exception {
+    public Client save(Client client ) throws Exception {
         validateFields(client);
         client.setState(true);
         return clientDao.save(client);
     }
 
     @Override
-    public Client update(Client client) throws Exception {
+    public Client update(Client client ) throws Exception {
         validateFields(client);
         verifyIfClientExists(client.getId());
         return clientDao.save(client);
@@ -46,22 +46,24 @@ public class ClientServiceImpl implements ClientService {
         clientDao.deleteById(id);
     }
 
-    private void validateFields(Client client) throws Exception{
-        if( client.getPassword().isBlank()  )  throw new Exception("El campo Password es requerido o su valor no es valido");
-        if( client.getName().length() == 0 ) throw new Exception("El campo Nombre es requerido o su valor no es valido");
+    @Override
+    public void validateFields(Client client) throws Exception{
+        if( client.getPassword().isBlank()   )  throw new Exception("El campo Password es requerido o su valor no es valido");
+        if( client.getName().length() == 0  ) throw new Exception("El campo Nombre es requerido o su valor no es valido");
         if( client.getAge() < 0 ) throw new Exception("El campo Edad es requerido o su valor no es valido");
-        if( client.getDni().length() == 0 ) throw new Exception("El campo Dni es requerido o su valor no es valido");
-        if( client.getAddress().length() == 0 ) throw new Exception("El campo Dirección es requerido o su valor no es valido");
-        if( client.getPhone().length() == 0 ) throw new Exception("El campo Télefono es requerido o su valor no es valido");
+        if( client.getDni().length() == 0  ) throw new Exception("El campo Dni es requerido o su valor no es valido");
+        if( client.getAddress().length() == 0  ) throw new Exception("El campo Dirección es requerido o su valor no es valido");
+        if( client.getPhone().length() == 0  ) throw new Exception("El campo Télefono es requerido o su valor no es valido");
 
-        if( client.getPassword().length() != 6 )  throw new Exception("El campo Password requiere seis caracteres");
+        if( client.getPassword().length() != 6  )  throw new Exception("El campo Password requiere seis caracteres");
 
     }
 
-    private void verifyIfClientExists(int id) throws Exception {
+    @Override
+    public void verifyIfClientExists(int id) throws Exception {
 
         if(getById(id) == null)
-            throw new Exception("CLIENT " + id + " does not exist");
+            throw new Exception("El cliente " + id + " no existe");
     }
 
 
