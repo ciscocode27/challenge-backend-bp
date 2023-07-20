@@ -1,10 +1,13 @@
 package com.pichincha.prueba.rest.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pichincha.prueba.rest.Utils.Classes.Enums.TransactionType;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "transactions")
@@ -14,6 +17,8 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime date;
 
     @Enumerated(EnumType.STRING)

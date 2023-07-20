@@ -20,6 +20,6 @@ public interface AccountDao extends CrudRepository<Account, Long> {
     public void deleteById(int id);
 
     @Query(value = "SELECT * FROM accounts\r\n"
-            + "where clientId = :clientId ; ", nativeQuery = true)
+            + "where client_id = :clientId ; ", nativeQuery = true)
     public List<Account> getByClientId(@Param("clientId") int id);
 }

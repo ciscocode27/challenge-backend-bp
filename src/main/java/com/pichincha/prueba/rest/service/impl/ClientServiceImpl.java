@@ -1,6 +1,7 @@
 package com.pichincha.prueba.rest.service.impl;
 
 import com.pichincha.prueba.rest.Entity.Client;
+import com.pichincha.prueba.rest.dao.AccountDao;
 import com.pichincha.prueba.rest.dao.ClientDao;
 import com.pichincha.prueba.rest.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     ClientDao clientDao;
+
+    @Autowired
+    AccountDao accountDao;
 
     @Override
     public List<Client> getAll() {
@@ -43,6 +47,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void deleteById(int id) throws Exception {
         verifyIfClientExists(id);
+        verifyDontHaveAccounts(id);
         clientDao.deleteById(id);
     }
 
@@ -57,6 +62,12 @@ public class ClientServiceImpl implements ClientService {
 
         if( client.getPassword().length() != 6  )  throw new Exception("El campo Password requiere seis caracteres");
 
+    }
+
+    private void verifyDontHaveAccounts(int id ) throws Exception  {
+        if(accountDao.getByClientId(id).size() != 0) {
+            throw new Exception("El cliente tiene cuentas, no puede eliminarse");
+        }
     }
 
     @Override

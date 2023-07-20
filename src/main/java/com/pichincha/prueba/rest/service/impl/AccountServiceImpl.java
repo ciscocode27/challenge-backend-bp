@@ -2,6 +2,7 @@ package com.pichincha.prueba.rest.service.impl;
 
 import com.pichincha.prueba.rest.Entity.Account;
 import com.pichincha.prueba.rest.dao.AccountDao;
+import com.pichincha.prueba.rest.dao.TransactionDao;
 import com.pichincha.prueba.rest.service.AccountService;
 import com.pichincha.prueba.rest.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     ClientService clientService;
+
+    @Autowired
+    TransactionDao transactionDao;
 
     /*public AccountServiceImpl(AccountDao accountDao) {
         this.accountDao = accountDao;
@@ -47,6 +51,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account update(Account account) throws Exception {
         verifyIfExists( account.getId() );
+        clientService.verifyIfClientExists( account.getClient().getId() );
         Account actualAccount = getById(account.getId());
         if(!actualAccount.getNumber().equals( account.getNumber() )) {
             verifyIfNumberIsValid(account.getNumber());
@@ -61,7 +66,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteById(int id) throws Exception {
         verifyIfExists(id);
-        //verifyDontHaveTransactions(id);
+        verifyDontHaveTransactions(id);
         accountDao.deleteById(id);
     }
 
@@ -78,13 +83,13 @@ public class AccountServiceImpl implements AccountService {
 
     }
 
-    /*@Override
+    @Override
     public void verifyDontHaveTransactions(int id) throws Exception {
         if(transactionDao.getByAccountId(id).size() != 0) {
-            throw new Exception("ACCOUNT " + id + " HAS TRANSACTIONS");
+            throw new Exception("La cuenta " + id + " tiene transacciones");
         }
 
-    }*/
+    }
 
     @Override
     public void verifyIfNumberIsValid(Long number) throws Exception {
@@ -93,4 +98,12 @@ public class AccountServiceImpl implements AccountService {
             throw new Exception("ACCOUNT NUMBER ALREADY EXISTS");
 
     }
+
+    @Override
+    public List<Account> getByClient(int clientId) throws Exception {
+        clientService.verifyIfClientExists(clientId);
+        return accountDao.findByClient(clientService.getById(clientId));
+
+    }
+
 }
