@@ -1,6 +1,7 @@
 package com.pichincha.prueba.rest.dao;
 
 import com.pichincha.prueba.rest.Entity.Transaction;
+import com.pichincha.prueba.rest.dto.ReportDto;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -32,6 +33,5 @@ public interface TransactionDao extends CrudRepository<Transaction, Long> {
             + "where account_id = :accountId \n "
             + "order by date desc limit 1", nativeQuery = true)
     public Transaction getLastTransaction(@Param("accountId") int accountId);
-
 
 }

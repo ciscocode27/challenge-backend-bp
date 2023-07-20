@@ -49,8 +49,8 @@ public class TransactionServiceImpl implements TransactionService {
         if(transaction.getType() == TransactionType.DEBITO)
             transaction.setAmount( transaction.getAmount().multiply(new BigDecimal(-1)) );
 
-        Account account = accountService.getById(transaction.getAccount().getId());
-        account.setBalance(actualBalance);
+        /*Account account = accountService.getById(transaction.getAccount().getId());
+        account.setBalance(actualBalance);*/
 
         return getCompleteObject(transactionDao.save(transaction));
     }
@@ -68,8 +68,8 @@ public class TransactionServiceImpl implements TransactionService {
         BigDecimal nuevoBalance = recalculateBalance(transaction);
         transaction.setBalance( nuevoBalance );
 
-        Account account = accountService.getById(transaction.getAccount().getId());
-        account.setBalance(nuevoBalance);
+        /*Account account = accountService.getById(transaction.getAccount().getId());
+        account.setBalance(nuevoBalance);*/
 
         return getCompleteObject( transactionDao.save(transaction) );
     }
