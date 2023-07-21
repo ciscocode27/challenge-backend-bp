@@ -25,10 +25,6 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     TransactionDao transactionDao;
 
-    /*public AccountServiceImpl(AccountDao accountDao) {
-        this.accountDao = accountDao;
-    }*/
-
     @Override
     public List<Account> getAll() {
         return accountDao.findAll();

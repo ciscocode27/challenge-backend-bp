@@ -7,7 +7,10 @@ import com.pichincha.prueba.rest.dao.AccountDao;
 import com.pichincha.prueba.rest.dao.ClientDao;
 import com.pichincha.prueba.rest.service.impl.ClientServiceImpl;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,11 +27,12 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class ClientServiceTest {
 
-    @Autowired
+    @InjectMocks
     ClientServiceImpl clientService;
-    @MockBean
+    @Mock
     ClientDao clientDao;
-    @MockBean
+
+    @Mock
     AccountDao accountDao;
 
 
@@ -40,7 +44,7 @@ public class ClientServiceTest {
         Client clientResponse = new Client(1, "SofíaZapata",Gender.FEMENINO,30,"095648726",
                 "Rosales","286922","123456", true, new ArrayList());
 
-        when( clientDao.save( any()) ).thenReturn(clientResponse);
+        when( clientDao.save( any() )).thenReturn(clientResponse);
 
         assertEquals(clientService.save(clientCreate) , clientResponse);
 
